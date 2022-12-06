@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
+#define MaxSize 50
 #define getName(var) #var
-const int MaxSize = 50;
 
 void Zero(double poly[MaxSize])
 {
@@ -10,7 +10,7 @@ void Zero(double poly[MaxSize])
 		poly[i] = 0;
 	}
 }
-int ChkSize(double size)
+int ChkInput(double size)
 {
 	double remainder = size - floor(size);
 	if (size < 0 || remainder != 0 || size > MaxSize - 1)
@@ -139,7 +139,7 @@ void inputPoly(double poly[MaxSize], const char polyName[10])
 	int size;
 	printf("Enter the degree of the %s: ", polyName);
 	scanf("%lf", &testsize);
-	size = ChkSize(testsize);
+	size = ChkInput(testsize);
 
 	const int deg = size;
 	for (int i = deg; i >= 0; i--)
@@ -230,7 +230,7 @@ void divisionResult(double poly1[MaxSize], double poly2[MaxSize])
 {
 	printf("Result = ");
 	printPoly(poly1);
-	printf("\t\t");
+	printf("\n\n");
 	printf("Remainder = ");
 	printPoly(poly2);
 	printf("\n\n");
