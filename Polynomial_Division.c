@@ -132,7 +132,7 @@ void printPoly(double poly[MaxSize])
 		}
 	}
 }
-void inputPoly(double poly[MaxSize], const char polyName[10])
+void inputPoly(double poly[MaxSize], const char *polyName)
 {
 	Zero(poly);
 	double testsize = 0;
