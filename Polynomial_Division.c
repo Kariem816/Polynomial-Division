@@ -3,6 +3,11 @@
 #define MaxSize 50
 #define getName(var) #var
 
+/**
+ *	@brief Zeroes out the array
+ *
+ *  @param poly[] - array to be zeroed out
+ */
 void Zero(double poly[MaxSize])
 {
 	for (int i = 0; i < MaxSize; i++)
@@ -10,6 +15,15 @@ void Zero(double poly[MaxSize])
 		poly[i] = 0;
 	}
 }
+
+/**
+ *  @brief  Checks if the input is valid
+ *
+ *  @param size - the input degree of the polynomial
+ *  @return size - the valid degree of the
+ *
+ *  @note The degree must be an integer, not negative, and less than MaxSize
+ */
 int ChkInput(double size)
 {
 	double remainder = size - floor(size);
@@ -25,6 +39,13 @@ int ChkInput(double size)
 	}
 	return size;
 }
+
+/**
+ * @brief Gets the degree of the polynomial
+ *
+ * @param poly[] - the polynomial
+ * @return deg - the degree of the polynomial
+ */
 int getDeg(double poly[MaxSize])
 {
 	int deg = 0;
@@ -37,6 +58,11 @@ int getDeg(double poly[MaxSize])
 	}
 	return deg;
 }
+
+/**
+ * @brief Prints the polynomial to standard output
+ * @param poly[] - the polynomial
+ */
 void printPoly(double poly[MaxSize])
 {
 	int polyDeg = getDeg(poly);
@@ -132,6 +158,12 @@ void printPoly(double poly[MaxSize])
 		}
 	}
 }
+
+/**
+ * @brief Gets the polynomial from the user
+ * @param poly[] - the polynomial to store the input
+ * @param polyName - the name of the polynomial
+ */
 void inputPoly(double poly[MaxSize], const char *polyName)
 {
 	Zero(poly);
@@ -164,6 +196,13 @@ void inputPoly(double poly[MaxSize], const char *polyName)
 	printPoly(poly);
 	printf("\n\n");
 }
+
+/**
+ * @brief Multiplies two polynomials
+ * @param poly1[] - the first polynomial
+ * @param poly2[] - the second polynomial
+ * @param product[] - array to store the product
+ */
 void multiply(double poly1[MaxSize], double poly2[MaxSize], double product[MaxSize])
 {
 	Zero(product);
@@ -175,6 +214,13 @@ void multiply(double poly1[MaxSize], double poly2[MaxSize], double product[MaxSi
 		}
 	}
 }
+
+/**
+ * @brief Adds two polynomials
+ * @param poly1[] - the first polynomial
+ * @param poly2[] - the second polynomial
+ * @param result[] - array to store the result
+ */
 void Add(double poly1[MaxSize], double poly2[MaxSize], double result[MaxSize])
 {
 	for (int i = 0; i < MaxSize; i++)
@@ -182,6 +228,13 @@ void Add(double poly1[MaxSize], double poly2[MaxSize], double result[MaxSize])
 		result[i] = poly1[i] + poly2[i];
 	}
 }
+
+/**
+ * @brief Subtracts two polynomials
+ * @param poly1[] - the first polynomial
+ * @param poly2[] - the second polynomial
+ * @param result[] - array to store the result
+ */
 void subtract(double poly1[MaxSize], double poly2[MaxSize], double result[MaxSize])
 {
 	for (int i = 0; i < MaxSize; i++)
@@ -189,6 +242,12 @@ void subtract(double poly1[MaxSize], double poly2[MaxSize], double result[MaxSiz
 		result[i] = poly1[i] - poly2[i];
 	}
 }
+
+/**
+ * @brief Checks if the polynomial is finished
+ * @param poly[] - the polynomial to check
+ * @return 1 if the polynomial is finished, 0 otherwise
+ */
 int IsFinished(double poly[MaxSize])
 {
 	int flag = 1;
@@ -202,6 +261,13 @@ int IsFinished(double poly[MaxSize])
 	}
 	return flag;
 }
+
+/**
+ * @brief Divides two polynomials
+ * @param numerator[] - the numerator polynomial
+ * @param denominator[] - the denominator polynomial
+ * @param result[] - array to store the result
+ */
 void divide(double numerator[MaxSize], double denominator[MaxSize], double result[MaxSize])
 {
 	double temp1[MaxSize], temp2[MaxSize];
@@ -214,6 +280,12 @@ void divide(double numerator[MaxSize], double denominator[MaxSize], double resul
 	multiply(denominator, temp1, temp2);
 	subtract(numerator, temp2, numerator);
 }
+
+/**
+ * @brief Checks if the denominator is zero
+ * @param poly[] - the polynomial to check
+ * @param polyName - the name of the polynomial
+ */
 void CheckZero(double poly[MaxSize], const char polyName[10])
 {
 	if ((getDeg(poly)) == 0 && (poly[0] == 0))
@@ -226,6 +298,12 @@ void CheckZero(double poly[MaxSize], const char polyName[10])
 		} while ((getDeg(poly)) == 0 && (poly[0] == 0));
 	}
 }
+
+/**
+ * @brief Prints the result and remainder of the division
+ * @param poly1[] - the result polynomial
+ * @param poly2[] - the remainder polynomial
+ */
 void divisionResult(double poly1[MaxSize], double poly2[MaxSize])
 {
 	printf("Result = ");
@@ -238,42 +316,46 @@ void divisionResult(double poly1[MaxSize], double poly2[MaxSize])
 
 void main()
 {
+	// Main Loop Variables
 	double numerator[MaxSize];
 	double denominator[MaxSize];
 	double temp[MaxSize];
 	double result[MaxSize];
+
+	// Again Loop Variables
 	int again = 0;
+	char answer;
+
 	do
 	{
+		// Resetting Arrays
 		Zero(result);
 		Zero(temp);
+
+		// Input Polynomials
 		inputPoly(numerator, getName(numerator));
 		inputPoly(denominator, getName(denominator));
+
+		// Checking if denominator is zero
 		CheckZero(denominator, getName(denominator));
 
-		while (IsFinished(numerator) == 0)
+		// Division
+		while (IsFinished(numerator) == 0) // While numerator is not zero
 		{
-			if (getDeg(numerator) < getDeg(denominator))
+			if (getDeg(numerator) < getDeg(denominator)) // Don't divide if numerator degree is less than denominator degree
 				break;
 			else
-				divide(numerator, denominator, temp);
-			Add(result, temp, result);
+				divide(numerator, denominator, temp); // Divide numerator by denominator and store result in temp
+			Add(result, temp, result);				  // Add temp to result
 		}
-		divisionResult(result, numerator);
+		divisionResult(result, numerator); // Print result and remainder
 
-		char answer;
-		do
-		{
-			printf("Another one? (y/n)\t");
-			scanf(" %c", &answer);
-		} while (answer != 'y' && answer != 'n');
-		if (answer == 'y')
+		// Ask user if they want to do another division
+		printf("Another one? (y/n)\t");
+		scanf("%c", &answer);
+		if (answer == 'y' || answer == 'Y')
 		{
 			again = 1;
-		}
-		else
-		{
-			again = 0;
 		}
 	} while (again == 1);
 }
